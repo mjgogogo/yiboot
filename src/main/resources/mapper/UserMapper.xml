@@ -6,7 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="password" jdbcType="VARCHAR" property="password" />
   </resultMap>
-  <select id="findUserList" resultMap="BaseResultMap">
+  <select id="findUserList" resultType="com.personal.yiboot.bean.pojo.User">
     select id,name from user
   </select>
 </mapper>

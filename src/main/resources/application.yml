@@ -10,4 +10,12 @@ server:
 #mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #配置映射文件
-#  type-aliases-package: com.example.test.bean #配置实体类
+  type-aliases-package: com.personal.yiboot.bean.pojo #配置实体类
+  config-location: classpath:sqlmapconfig.xml #分页
+
+#分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
