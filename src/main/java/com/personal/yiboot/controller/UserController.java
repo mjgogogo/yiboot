@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/userList")
     @ApiOperation(value="用户列表",notes = "分页查询")
     public PageResult<User> findUserList(UserParam param){
-        LoggerUtil.info(logger,"pageSize()={0},pageIndex={1}",param.getPageSize(),param.getPageIndex());
+        LoggerUtil.info(logger,"pageSize={0},pageIndex={1}",param.getPageSize(),param.getPageIndex());
         PageResult<User> result = userService.findUserList(param);
         return result;
     }

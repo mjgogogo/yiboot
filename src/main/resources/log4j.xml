@@ -2,18 +2,11 @@
 <!DOCTYPE log4j:configuration SYSTEM "http://toolkit.alibaba-inc.com/dtd/log4j/log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender name="CONSOLE-APPENDER" class="org.apache.log4j.ConsoleAppender">
-        <param name="encoding" value="UTF-8" />
-        <param name="threshold" value="debug"></param>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p %-32t - %m%n" />
-        </layout>
-    </appender>
     <appender name="DEFAULT-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="file" value="./logs/default.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="debug"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %-5p %-32t - %m%n"/>
         </layout>
@@ -28,30 +21,61 @@
             <param name="ConversionPattern" value="%d %-5p %-32t - %m%n"/>
         </layout>
     </appender>
-    <appender name="HOSPITAL-WEB" class="org.apache.log4j.DailyRollingFileAppender">
+    <appender name="debug-appender" class="org.apache.log4j.RollingFileAppender">
+        <!-- 日志文件全路径名 -->
         <param name="file" value="./logs/web.log" />
+        <!--是否在已存在的文件追加写：默认时true，若为false则每次启动都会删除并重新新建文件-->
         <param name="append" value="true" />
-        <param name="encoding" value="UTF-8" />
-        <param name="threshold" value="debug" />
+        <param name="threshold" value="debug"/>
+        <!-- 保存备份日志的最大个数，默认值是：1  -->
+        <param name="maxBackupIndex" value="10" />
+        <!-- 设置当日志文件达到此阈值的时候自动回滚，单位可以是KB，MB，GB，默认单位是KB，默认值是：10MB -->
+        <param name="maxFileSize" value="10KB" />
+        <!-- 设置日志输出的样式 -->
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p %-32t - %m%n" />
+            <!-- 日志输出格式 -->
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5p] [method:%l]%n%m%n%n" />
         </layout>
     </appender>
-    <logger name="debug.log" additivity="false">
+    <!--控制台输出sql执行过程-->
+    <appender name="CONSOLE-APPENDER" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{dd/MM/yy hh:mm:ss:sss z}] %5p %c{2}: %m%n" />
+        </layout>
+    </appender>
+    <!-- 这个就是自定义的一个logger -->
+    <!-- 输出级别是debug级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
+    <!-- additivity 这个默认是true，即继承父类 root logger -->
+    <!-- 也就是说，你的这个日志也会在root的logger里面输出的，我这里配置false，就是不继承，各走各的。 -->
+    <!-- appender-ref 也就是说这个logger的输出目的地是哪里，ref就是关联到上面声明的一个debug-appender -->
+    <logger name="StreamOperateFile" additivity="false">
         <level value="debug" />
-        <appender-ref ref="HOSPITAL-WEB" />
-        <appender-ref ref="ERROR-APPENDER" />
+        <appender-ref ref="debug-appender" />
     </logger>
-    <!--   <logger name="debug.log" additivity="false">
-          <level value="debug" />
-          <appender-ref ref="CONSOLE-APPENDER" />
-          <appender-ref ref="ERROR-APPENDER" />
-          <appender-ref ref="DEFAULT-APPENDER" />
-      </logger> -->
+    <!--通过<logger></logger>的定义可以将各个包中的类日志输出到不同的日志文件中-->
+<!--    <logger name="org.springframework">-->
+<!--        <level value="ERROR" />-->
+<!--    </logger>-->
+<!--    <logger name="org.mybatis.spring">-->
+<!--        <level value="ERROR" />-->
+<!--    </logger>-->
+<!--    <logger name="net.sf.ehcache">-->
+<!--        <level value="ERROR" />-->
+<!--    </logger>-->
+<!--    <logger name="com.personal.yiboot">-->
+<!--        <level value="ERROR" />-->
+<!--    </logger>-->
+<!--    <logger name="java.sql">-->
+<!--        <level value="debug" />-->
+<!--    </logger>-->
+    <!-- 输出级别是debug级别及以上的日志，下面的ref关联的两个appender没有filter设置，
+           所以，debug及以上的日志都是会输出到这4个appender的 -->
     <root>
         <level value="debug" />
         <appender-ref ref="CONSOLE-APPENDER" />
         <appender-ref ref="ERROR-APPENDER" />
         <appender-ref ref="DEFAULT-APPENDER" />
+        <appender-ref ref="debug-appender" />
     </root>
+
 </log4j:configuration>
