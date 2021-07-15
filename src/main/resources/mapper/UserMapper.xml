@@ -10,4 +10,10 @@
   <select id="findUserList" resultType="com.personal.yiboot.bean.pojo.User" useCache="true">
     select id,name from user
   </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into user (name, password)
+    values (#{name}, #{password})
+  </insert>
+
 </mapper>
