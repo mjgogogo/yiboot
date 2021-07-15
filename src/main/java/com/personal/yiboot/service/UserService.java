@@ -9,4 +9,6 @@ public interface UserService {
 
     PageResult<User> findUserList(UserParam param);
 
+    int addUser(User user);
+
 }

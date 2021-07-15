@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserMapper{
 
     List<User> findUserList(UserParam userParam);
+
+    int insert(User user);
 }

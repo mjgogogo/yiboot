@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,11 @@ public class UserController {
         LoggerUtil.info(logger,"pageSize={0},pageIndex={1}",param.getPageSize(),param.getPageIndex());
         PageResult<User> result = userService.findUserList(param);
         return result;
+    }
+
+    @PostMapping("/addUser")
+    @ApiOperation(value="新增用户",notes = "新增")
+    public int addUser(User user){
+        return userService.addUser(user);
     }
 }

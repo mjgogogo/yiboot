@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
         Page<User> page = (Page)userMapper.findUserList(param);
         return new PageResult(page.getResult(),page.getTotal(),page.getPageNum(),page.getPageSize(), page.getPages());
     }
+
+    @Override
+    public int addUser(User user) {
+        return userMapper.insert(user);
+    }
 }
