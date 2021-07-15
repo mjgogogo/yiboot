@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: test  #数据库名
-    url: jdbc:mysql://localhost:3306/2021new #url
+    url: jdbc:mysql://localhost:3306/2021new?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8 #url
     username: root  #用户名
     password: 1234  #密码
     driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
