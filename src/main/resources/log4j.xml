@@ -21,22 +21,34 @@
             <param name="ConversionPattern" value="%d %-5p %-32t - %m%n"/>
         </layout>
     </appender>
-    <appender name="debug-appender" class="org.apache.log4j.RollingFileAppender">
+   <!-- 打印sql日志到文件中 日志级别设置为：TRACE-->
+    <appender name="sql-appender" class="org.apache.log4j.FileAppender">
         <!-- 日志文件全路径名 -->
-        <param name="file" value="./logs/web.log" />
+        <param name="file" value="./logs/sql.log" />
         <!--是否在已存在的文件追加写：默认时true，若为false则每次启动都会删除并重新新建文件-->
         <param name="append" value="true" />
-        <param name="threshold" value="debug"/>
-        <!-- 保存备份日志的最大个数，默认值是：1  -->
-        <param name="maxBackupIndex" value="10" />
-        <!-- 设置当日志文件达到此阈值的时候自动回滚，单位可以是KB，MB，GB，默认单位是KB，默认值是：10MB -->
-        <param name="maxFileSize" value="10KB" />
-        <!-- 设置日志输出的样式 -->
+        <param name="threshold" value="TRACE"/>
         <layout class="org.apache.log4j.PatternLayout">
             <!-- 日志输出格式 -->
             <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5p] [method:%l]%n%m%n%n" />
         </layout>
     </appender>
+    <!--<appender name="debug-appender" class="org.apache.log4j.RollingFileAppender">
+        &lt;!&ndash; 日志文件全路径名 &ndash;&gt;
+        <param name="file" value="./logs/web.log" />
+        &lt;!&ndash;是否在已存在的文件追加写：默认时true，若为false则每次启动都会删除并重新新建文件&ndash;&gt;
+        <param name="append" value="true" />
+        <param name="threshold" value="debug"/>
+        &lt;!&ndash; 保存备份日志的最大个数，默认值是：1  &ndash;&gt;
+        <param name="maxBackupIndex" value="10" />
+        &lt;!&ndash; 设置当日志文件达到此阈值的时候自动回滚，单位可以是KB，MB，GB，默认单位是KB，默认值是：10MB &ndash;&gt;
+        <param name="maxFileSize" value="10KB" />
+        &lt;!&ndash; 设置日志输出的样式 &ndash;&gt;
+        <layout class="org.apache.log4j.PatternLayout">
+            &lt;!&ndash; 日志输出格式 &ndash;&gt;
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5p] [method:%l]%n%m%n%n" />
+        </layout>
+    </appender>-->
     <!--控制台输出sql执行过程-->
     <appender name="CONSOLE-APPENDER" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
@@ -44,38 +56,48 @@
         </layout>
     </appender>
     <!-- 这个就是自定义的一个logger -->
-    <!-- 输出级别是debug级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
-    <!-- additivity 这个默认是true，即继承父类 root logger -->
-    <!-- 也就是说，你的这个日志也会在root的logger里面输出的，我这里配置false，就是不继承，各走各的。 -->
-    <!-- appender-ref 也就是说这个logger的输出目的地是哪里，ref就是关联到上面声明的一个debug-appender -->
-    <logger name="StreamOperateFile" additivity="false">
-        <level value="debug" />
-        <appender-ref ref="debug-appender" />
-    </logger>
-    <!--通过<logger></logger>的定义可以将各个包中的类日志输出到不同的日志文件中-->
-<!--    <logger name="org.springframework">-->
-<!--        <level value="ERROR" />-->
+    <!--
+     注意：
+     1：当additivity="false"时，root中的配置就失灵了，不遵循缺省的继承机制
+     2：logger中的name非常重要，它代表记录器的包的形式，有一定的包含关系，试验表明
+        2-1：当定义的logger的name同名时，只有最后的那一个才能正确的打印日志
+        2-2：当对应的logger含有包含关系时，比如：name=test.log4j.test8 和 name=test.log4j.test8.UseLog4j，则2-1的情况是一样的
+        2-3：logger的name表示所有的包含在此名的所有记录器都遵循同样的配置，name的值中的包含关系是指记录器的名称哟！注意啦！
+     3：logger中定义的level和appender中的filter定义的level的区间取交集
+     4：如果appender中的filter定义的 levelMin > levelMax ，则打印不出日志信息
+     -->
+<!--    <logger name="test.log4j.test8.UseLog4j" additivity="false">-->
+<!--        <level value ="warn"/>-->
+<!--        <appender-ref ref="warn-appender"/>-->
 <!--    </logger>-->
-<!--    <logger name="org.mybatis.spring">-->
-<!--        <level value="ERROR" />-->
+
+<!--    <logger name="java.sql.Connection" additivity="true">-->
+<!--        <level value="trace" />-->
 <!--    </logger>-->
-<!--    <logger name="net.sf.ehcache">-->
-<!--        <level value="ERROR" />-->
+
+<!--    <logger name="java.sql.Statement" additivity="true">-->
+<!--        <level value="trace" />-->
 <!--    </logger>-->
-<!--    <logger name="com.personal.yiboot">-->
-<!--        <level value="ERROR" />-->
+
+<!--    <logger name="java.sql.PreparedStatement" additivity="true">-->
+<!--        <level value="trace" />-->
 <!--    </logger>-->
-<!--    <logger name="java.sql">-->
-<!--        <level value="debug" />-->
+
+<!--    <logger name="java.sql.ResultSet" additivity="true">-->
+<!--        <level value="trace" />-->
+<!--    </logger>-->
+
+    <!--    <logger name="java.sql.ResultSet" additivity="false">-->
+<!--        <level value="trace" />-->
 <!--    </logger>-->
     <!-- 输出级别是debug级别及以上的日志，下面的ref关联的两个appender没有filter设置，
            所以，debug及以上的日志都是会输出到这4个appender的 -->
     <root>
-        <level value="debug" />
+        <level value="trace" />
+        <appender-ref ref="sql-appender" />
         <appender-ref ref="CONSOLE-APPENDER" />
         <appender-ref ref="ERROR-APPENDER" />
         <appender-ref ref="DEFAULT-APPENDER" />
-        <appender-ref ref="debug-appender" />
     </root>
 
 </log4j:configuration>
