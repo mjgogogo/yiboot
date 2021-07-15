@@ -1,10 +1,17 @@
 package com.personal.yiboot.bean.pojo;
 
-public class User {
+import javax.persistence.Transient;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
 
     private String name;
 
+    /** 变量将不是持久化的一部分*/
+    @Transient
     private String password;
 
     /**
