@@ -111,6 +111,8 @@
 	</dependencies>
 
 	<build>
+		<!--编译、打包、部署的项目名称-->
+		<finalName>api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
