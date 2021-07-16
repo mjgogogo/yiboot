@@ -3,7 +3,9 @@ package com.personal.yiboot.service.impl;
 import com.github.pagehelper.Page;
 import com.personal.yiboot.bean.param.UserParam;
 import com.personal.yiboot.bean.pojo.User;
+import com.personal.yiboot.common.exception.BusinessException;
 import com.personal.yiboot.common.page.PageResult;
+import com.personal.yiboot.constant.ErrorCodeConsts;
 import com.personal.yiboot.dao.UserMapper;
 import com.personal.yiboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addUser(User user) {
+    public int addUser(User user){
         return userMapper.insert(user);
     }
 }

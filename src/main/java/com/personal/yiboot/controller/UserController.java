@@ -1,7 +1,10 @@
 package com.personal.yiboot.controller;
 
+import com.personal.yiboot.api.RespGenerator;
+import com.personal.yiboot.api.ResponseResult;
 import com.personal.yiboot.bean.param.UserParam;
 import com.personal.yiboot.bean.pojo.User;
+import com.personal.yiboot.common.exception.BusinessException;
 import com.personal.yiboot.common.page.PageResult;
 import com.personal.yiboot.service.UserService;
 import com.personal.yiboot.tasks.AsyncLogTask;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.concurrent.Future;
 
@@ -37,13 +41,16 @@ public class UserController {
 
     @PostMapping("/addUser")
     @ApiOperation(value="新增用户",notes = "新增")
-    public int addUser(User user) throws Exception{
+    public ResponseResult addUser(User user) throws Exception{
+        if(user == null || StringUtil.isEmpty(user.getName())){
+            throw new BusinessException(501,"参数不能为空");
+        }
         int num = userService.addUser(user);
         Future<Boolean> add = asyncLogTask.insertLog(user);
-        //（一定）没有输出 说明没有执行完异步任务
+        //            （一定）没有输出 说明没有执行完异步任务
         while (add.isDone()){
             System.out.println("insertLog is done ");
         }
-        return num;
+        return RespGenerator.successful(num);
     }
 }
