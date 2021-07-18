@@ -11,7 +11,7 @@
 	<groupId>com.personal</groupId>
 	<artifactId>yiboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+<!--	<packaging>war</packaging>-->
 	<name>yiboot</name>
 	<description>yiboot project for Spring Boot</description>
 	<properties>
@@ -100,12 +100,12 @@
 		</dependency>
 		<!--tomcat:
 		springboot有内置的tomcat，打成war包是依赖于外面的tomcat运行的，所以这里添加依赖进行忽略springboot内置tomcat-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<!--相当于打包阶段做了exclude操作-->
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			&lt;!&ndash;相当于打包阶段做了exclude操作&ndash;&gt;-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 		<!--添加依赖end-->
 
 	</dependencies>
