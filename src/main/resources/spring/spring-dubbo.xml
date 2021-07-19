@@ -16,7 +16,7 @@
 
     <!--引入服务提供方提供的dubbo服务-url="dubbo://127.0.0.1:20880"  url指定后可以直连服务提供者-->
     <dubbo:reference interface="com.yb.common.api.IHelloService" id="helloService"
-                 url="dubbo://127.0.0.1:20880"   protocol="dubbo" version="1.0" timeout="20000">
+                  protocol="dubbo" version="1.0" timeout="20000">
     </dubbo:reference>
 
 </beans>
