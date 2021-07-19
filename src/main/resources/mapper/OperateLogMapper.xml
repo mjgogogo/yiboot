@@ -11,16 +11,16 @@
     <result column="create_user" property="createUser" jdbcType="VARCHAR" />
     <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="column_with_id">
+  <sql id="Base_Column_list">
     id,operate_type,detail,create_time,update_time,create_user,update_user
   </sql>
-  <sql id="column_without_id">
+  <sql id="Base_Column_without_id">
     operate_type,detail,create_time,update_time,create_user,update_user
   </sql>
 
   <select id="findOperateLogList">
     select
-    <include refid="column_with_id"></include>
+    <include refid="Base_Column_list"></include>
     from yb_operate_log
   </select>
 

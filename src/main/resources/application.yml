@@ -6,7 +6,7 @@ spring:
     password: 1234  #密码
     driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
 server:
-  port: 8088
+  port: 8083
   servlet:
     context-path: /api  #项目名称 必须加上/ ,访问地址localhost:8088/api/具体接口地址
 #mybatis配置
@@ -25,6 +25,13 @@ pagehelper:
 #swagger2
 swagger:
   enable: true
+
+#dubbo zk
+dubbo:
+  registry:
+    address: zookeeper://127.0.0.1:2181
+#    scan:
+#      base-packages: com.personal.yiboot.comsumer
 
 
 
